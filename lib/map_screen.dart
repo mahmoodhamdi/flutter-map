@@ -131,6 +131,14 @@ class _MapScreenState extends State<MapScreen> {
 
   void _addDestinationMarker(LatLng point) {
     setState(() {
+      // clear _markers before adding new ones but let the 0 index marker stay
+      if (_markers.length > 1) {
+        _markers.removeRange(
+          1,
+          _markers.length,
+        );
+      }
+
       _markers.add(
         Marker(
           width: 80.0,
@@ -237,15 +245,6 @@ class _MapScreenState extends State<MapScreen> {
         setState(() {
           _routePoints =
               coords.map((coord) => LatLng(coord[1], coord[0])).toList();
-          _markers.add(
-            Marker(
-              width: 80.0,
-              height: 80.0,
-              point: end,
-              child:
-                  const Icon(Icons.location_on, color: Colors.red, size: 40.0),
-            ),
-          );
         });
       } else {
         _showErrorSnackBar("Failed to get route. Please try again.");
